@@ -7,10 +7,18 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+
 Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'preservim/nerdcommenter'
+Plug 'vim-syntastic/syntastic'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-Plug '~/.fzf'
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " Initialize plugin system
@@ -129,6 +137,9 @@ nnoremap <silent> <C-Left> :bp<CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
+" Automaticaly close nvim if NERDTree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 " Toggle display
 map <C-n> :NERDTreeToggle<CR>
 
@@ -136,7 +147,10 @@ map <C-n> :NERDTreeToggle<CR>
 let NERDTreeMapActivateNode='<space>'
 
 " Display hidden files
-let NERDTreeShowHidden=1
+let NERDTreeShowHidden=100
+
+"
+let NERDTreeIgnore = []
 
 " Locate the focused file in the tree
 nmap <leader>j :NERDTreeFind<CR>
